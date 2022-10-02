@@ -44,7 +44,7 @@ O - The CsvHandler class is an abstract class that contains protected and privat
 I - Every interface is a small and specific in respect to necessity <br />
 D - Key dependencies were injected across the project to remove the hassle of a tightly coupled system <br />
 
-- #### Implementation
+### Implementation
 My goal for this application is to create a system that delegates responsibility to relevenat parts only.
 Lets look at how I implemented the various part of the system.
 
