@@ -1,26 +1,50 @@
-## Design Decisions
 
-What optimizations did you make in your code? E.g. refactors, performance improvements, accessibility
+# Crypto Portfolio Tracker
 
-- ### Type Safety
+Case Study :
+
+Write a command line program that does the following
+
+ - Given no parameters, return the latest portfolio value per token in USD
+ - Given a token, return the latest portfolio value for that token in USD
+ - Given a date, return the portfolio value per token in USD on that date
+ - Given a date and a token, return the portfolio value of that token in USD on that date
+
+
+## Author
+- [@ogubuikealex](ogubuikealex@gmail.com)
+
+## Tech Stack
+
+NodeJS, Typescript
+
+## License
+
+[MIT](https://github.com/king-Alex-d-great/CryptoPortfolioManager)
+
+
+## Design System
+
+### Overview
+
+- Type Safety
 We can all agree that Javascript is an awesome language. The only problem is because it is not strictly typed, it can be error prone. 
 <br /> To mitigate some of the type errors that can come up from JS, this project is written in typescript and then compiled to Javascript.
-The second reason I went with typscript is because its language construct allow object oriented programming outside the box 
+<br /> The second reason I went with typscript is because its language construct allow object oriented programming outside the box 
 
-- ### Design Decisions
-
-I use object oriented approach when building.
-The various classes in this project were designed to strictly follow the principles of Encapsulation and Abstraction. This means that they hide internal implementations and only expose necessary class members.
+- Design Decisions
+I use object oriented approach when building. <br />
+The various classes in this project were designed to strictly follow the principles of Encapsulation and Abstraction. <br /> This means that they hide internal implementations and only expose necessary class members.
 A typical example is the Application class that only exposes a run function which kick starts the entire application process.
 
-For the sake of maintainability, I made extensive use of the SOID in SOLID principles.
-For example:
-S - The only responsibility assigned to the repository class is accessing the data in the CSV file
-O - The CsvHandler class is an abstract class that contains protected and private methods. <br>This means it can be extended but never modified
-I - Every interface is a small and specific in respect to necessity
-D - Key dependencies were injected across the project to remove the hassle of a tightly coupled system
+For the sake of maintainability, I made extensive use of the SOID in SOLID principles.<br />
+For example: <br />
+S - The only responsibility assigned to the repository class is accessing the data in the CSV file <br />
+O - The CsvHandler class is an abstract class that contains protected and private methods. <br>This means it can be extended but never modified <br />
+I - Every interface is a small and specific in respect to necessity <br />
+D - Key dependencies were injected across the project to remove the hassle of a tightly coupled system <br />
 
-- #### Design Patterns
+- #### Implementation
 
 My goal for this application is to create a system that delegates responsibility to relevenat parts only.
 Lets look at how I implemented the various part of the system.
@@ -44,4 +68,39 @@ It uses an IRequestService class to handle requests from the user of the applica
 #### The Application Class
 This class recieves a controller instance via dependency injection. It sends requests and receives responses from the controller instance.
 It has several private methods and exposes one public function to kick start the application.
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/king-Alex-d-great/Customer_Tracker.git
+```
+
+Go to the project directory
+
+```bash
+  cd my-project
+```
+
+Install dependencies
+
+```bash
+  npm i
+```
+
+Start the server
+
+```bash
+  npm start
+```
+
+Start the Forntend
+
+
+```bash
+  cd .\informationcollector-client\
+  npm start
+```
 
