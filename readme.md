@@ -27,25 +27,24 @@ NodeJS, Typescript
 
 ### Overview
 
-- Type Safety
+**Type Safety** <br />
 We can all agree that Javascript is an awesome language. The only problem is because it is not strictly typed, it can be error prone. 
 <br /> To mitigate some of the type errors that can come up from JS, this project is written in typescript and then compiled to Javascript.
 <br /> The second reason I went with typscript is because its language construct allow object oriented programming outside the box 
 
-- Design Decisions
+**Design Decisions** <br />
 I use object oriented approach when building. <br />
 The various classes in this project were designed to strictly follow the principles of Encapsulation and Abstraction. <br /> This means that they hide internal implementations and only expose necessary class members.
 A typical example is the Application class that only exposes a run function which kick starts the entire application process.
 
-For the sake of maintainability, I made extensive use of the SOID in SOLID principles.<br />
-For example: <br />
+**For the sake of maintainability, I made extensive use of the SOID in SOLID principles:** <br />
+<br />
 S - The only responsibility assigned to the repository class is accessing the data in the CSV file <br />
-O - The CsvHandler class is an abstract class that contains protected and private methods. <br>This means it can be extended but never modified <br />
+O - The CsvHandler class is an abstract class that contains protected and private methods. This means it can be extended but never modified <br />
 I - Every interface is a small and specific in respect to necessity <br />
 D - Key dependencies were injected across the project to remove the hassle of a tightly coupled system <br />
 
 - #### Implementation
-
 My goal for this application is to create a system that delegates responsibility to relevenat parts only.
 Lets look at how I implemented the various part of the system.
 
