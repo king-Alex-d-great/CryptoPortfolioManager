@@ -82,17 +82,27 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd CryptoPortfolioManager
 ```
 
 Install dependencies
 
 ```bash
-  npm i
-  Download and unzip file from : [transactions.csv](https://s3-ap-southeast-1.amazonaws.com/static.propine.com/transactions.csv.zip)
-  Place the unzipped file ("transactions.csv") in the root folder of the cloned project:
+  npm i  
+```
 
-  Final folder structure
+Get CSV file
+```bash
+Project requirement:  _You have made transactions over a period of time which is logged in a CSV file._ 
+
+Step One: Download and Unzip file:
+https://s3-ap-southeast-1.amazonaws.com/static.propine.com/transactions.csv.zip
+
+Step Two:
+Place the unzipped file ("transactions.csv") in the root folder of the cloned project:
+
+The folder structure should look like: 
+
 ├── Application
 ├── Controller
 ├── Models  
@@ -104,6 +114,7 @@ Install dependencies
 ├── readme.md
 ├── transactions.csv
 ├── tsconfig.json
+
 ```
 
 Start the server
@@ -111,6 +122,3 @@ Start the server
 ```bash
   npm run dev
 ```
-
-
-
