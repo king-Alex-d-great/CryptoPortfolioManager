@@ -78,13 +78,12 @@ class Application {
                 choice = Models_1.Choices.OneBalanceByDate;
                 result = (yield this.controller.handleGetATokenBalanceOnDate(this.availableTokens)).toString();
             }
-            console.log(typeof (result), "TYPE");
             console.log(`Query: ${choice}\n`);
             if (typeof (result) == "string") {
-                console.log(`Result: ${result}`);
+                console.log(`Result (USD): ${result}`);
             }
             else {
-                console.log("Result:\n");
+                console.log("Result (USD):\n");
                 result.forEach(x => console.log(x));
             }
             this.menuHandler();

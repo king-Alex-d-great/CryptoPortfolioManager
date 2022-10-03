@@ -30,8 +30,7 @@ class Controller {
             let usdBalances = yield (0, priceConverter_1.generateCurrentDataEndpoint)(availabletokens.toString());
             return result.map(x => {
                 for (let i in usdBalances) {
-                    console.log(i, "I");
-                    if (i.toLowerCase() == x.name.toLowerCase()) // alerts key
+                    if (i.toLowerCase() == x.name.toLowerCase())
                         x.balance *= (+usdBalances[i].USD);
                 }
                 return x;
@@ -40,24 +39,16 @@ class Controller {
         this.handleGetAllTokenBalancesOnDate = () => __awaiter(this, void 0, void 0, function* () {
             let date = yield this.utils.getDate();
             let result = this.csvService.getBalanceByDate(date, "");
-            const availabletokens = this.getAvailableTokens();
             const unixTime = Math.floor(date.getTime() / 1000);
-            console.log(availabletokens, "AVAILABLE TOKENS");
-            //let usdBalances = await generateHistoricalDataEndpoint(unixTime, availabletokens.toString());
-            //console.log(usdBalances, "BALANCE")
-            // console.log(result, "RESULT")
             result = result.map((x) => __awaiter(this, void 0, void 0, function* () {
                 let usdBalances = yield (0, priceConverter_1.generateHistoricalDataEndpoint)(unixTime, x.name);
-                console.log(usdBalances, "BALANCE");
                 for (let i in usdBalances) {
                     x.balance *= (+usdBalances[i].USD);
-                    console.log(x.balance *= (+usdBalances[i].USD), "AFTER MULTIPLICATION");
                 }
                 return x;
             }));
-            result = Promise.all(result).then((values) => values);
-            console.log(result, "FINAL RESULT");
-            return yield result;
+            result = yield Promise.all(result).then((values) => values);
+            return result;
         });
         this.handleGetATokenBalanceOnDate = (availableTokens) => __awaiter(this, void 0, void 0, function* () {
             let date = yield this.utils.getDate();

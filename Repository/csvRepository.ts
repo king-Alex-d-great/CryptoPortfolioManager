@@ -1,3 +1,4 @@
+import { debug } from "console";
 import { Transaction, TransactionStore, TransactionType } from "../Models";
 
 const fs = require("fs");
@@ -10,22 +11,24 @@ export abstract class CsvHandler {
     protected static tokenTypes: string[] = [];
 
     protected static setCsvStore() {
-        fs.createReadStream("./transactions.csv")
-            .pipe(
-                parse({
-                    delimiter: ",",
-                    columns: true,
-                    ltrim: true,
+        return new Promise((resolve, reject) => {
+            fs.createReadStream("./transactions.csv")
+                .pipe(
+                    parse({
+                        delimiter: ",",
+                        columns: true,
+                        ltrim: true,
+                    })
+                )
+                .on("data", (row: Transaction) => this.handleCsvTransaction(row))
+                .on("error", function (error: Error) {
+                    console.log(error.message);
                 })
-            )
-            .on("data", (row: Transaction) => this.handleCsvTransaction(row))
-            .on("error", function (error: Error) {
-                console.log(error.message);
-            })
-            .on("end", function () {
-                // 👇 log the result array                
-                console.log("parsed csv data:");
-            });
+                .on("end", function () {
+                    // 👇 log the result array                
+                    console.log("parsed csv data:");
+                });
+        }).then(() => console.log("Success")).catch(err => console.log(err))
     }
 
     protected static handleCsvTransaction = (row: Transaction) => {
@@ -74,11 +77,11 @@ export abstract class CsvHandler {
         }
     }
 
-    protected static getCsvStore = () => {
+    protected static getCsvStore = async () => {
         try {
             if (this.csvStore.length > 0) return this.csvStore;
 
-            this.setCsvStore();
+            await this.setCsvStore();
             return this.csvStore;
         } catch (err) {
             console.log(err.message);
@@ -90,7 +93,7 @@ export abstract class CsvHandler {
         try {
             if (this.csvStoreGroupedByTokenType.length > 0) return this.csvStoreGroupedByTokenType;
 
-            this.setCsvStore();
+            this.getCsvStore();
             return this.csvStoreGroupedByTokenType;
         } catch (err) {
             console.log(err.message);
@@ -102,7 +105,7 @@ export abstract class CsvHandler {
         try {
             if (this.csvStoreGroupedByDate.length > 0) return this.csvStoreGroupedByDate;
 
-            this.setCsvStore();
+            this.getCsvStore();
             return this.csvStoreGroupedByDate;
         } catch (err) {
             console.log(err.message);
@@ -115,7 +118,7 @@ export abstract class CsvHandler {
         try {
             if (this.tokenTypes.length > 0) return this.tokenTypes;
 
-            this.setCsvStore();
+            this.getCsvStore();
             return this.tokenTypes;
         } catch (err) {
             console.log(err.message);

@@ -10,12 +10,11 @@ class RequestService extends csvRepository_1.CsvHandler {
             transactions = transactions.filter(x => x.transaction_type == transactionType);
             return transactions.reduce((sum, current) => sum + +current.amount, 0);
         };
-        this.getTransactions = (token = null) => {
-            const csvStore = RequestService.getCsvStore();
-            if (token.trim().length === 0)
-                return csvStore;
-            return csvStore.filter((x) => x.token.toLowerCase() == token.toLowerCase());
-        };
+        // public getTransactions = (token: string = null): Transaction[] => {
+        //     const csvStore: Transaction[] = RequestService.getCsvStore();
+        //     if (token.trim().length === 0) return csvStore;
+        //     return csvStore.filter((x) => x.token.toLowerCase() == token.toLowerCase());
+        // }
         this.getTransactionsByDate = (date) => {
             const csvStore = RequestService.getGroupedCsvStoreByDate();
             let transactions = csvStore.find(x => x.name == date.toDateString());

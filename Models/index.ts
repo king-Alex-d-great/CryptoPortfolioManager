@@ -33,7 +33,7 @@ export enum TransactionType {
 
 
 export interface IRequestService {
-    getTransactions(token: string): Transaction[];
+   // getTransactions(token: string): Transaction[];
     getTransactionsByDate(date: Date): TransactionStore;
     getBalance(token: string);
     getBalanceByDate(date: Date, token: string);

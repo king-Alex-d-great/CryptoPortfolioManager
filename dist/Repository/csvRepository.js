@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CsvHandler = void 0;
@@ -7,20 +16,22 @@ const fs = require("fs");
 const { parse } = require("csv-parse");
 class CsvHandler {
     static setCsvStore() {
-        fs.createReadStream("./transactions.csv")
-            .pipe(parse({
-            delimiter: ",",
-            columns: true,
-            ltrim: true,
-        }))
-            .on("data", (row) => this.handleCsvTransaction(row))
-            .on("error", function (error) {
-            console.log(error.message);
-        })
-            .on("end", function () {
-            // 👇 log the result array                
-            console.log("parsed csv data:");
-        });
+        return new Promise((resolve, reject) => {
+            fs.createReadStream("./transactions.csv")
+                .pipe(parse({
+                delimiter: ",",
+                columns: true,
+                ltrim: true,
+            }))
+                .on("data", (row) => this.handleCsvTransaction(row))
+                .on("error", function (error) {
+                console.log(error.message);
+            })
+                .on("end", function () {
+                // 👇 log the result array                
+                console.log("parsed csv data:");
+            });
+        }).then(() => console.log("Success")).catch(err => console.log(err));
     }
 }
 exports.CsvHandler = CsvHandler;
@@ -70,22 +81,22 @@ CsvHandler.handleCsvTransaction = (row) => {
         throw err;
     }
 };
-CsvHandler.getCsvStore = () => {
+CsvHandler.getCsvStore = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (_a.csvStore.length > 0)
             return _a.csvStore;
-        _a.setCsvStore();
+        yield _a.setCsvStore();
         return _a.csvStore;
     }
     catch (err) {
         console.log(err.message);
     }
-};
+});
 CsvHandler.getGroupedCsvStore = () => {
     try {
         if (_a.csvStoreGroupedByTokenType.length > 0)
             return _a.csvStoreGroupedByTokenType;
-        _a.setCsvStore();
+        _a.getCsvStore();
         return _a.csvStoreGroupedByTokenType;
     }
     catch (err) {
@@ -96,7 +107,7 @@ CsvHandler.getGroupedCsvStoreByDate = () => {
     try {
         if (_a.csvStoreGroupedByDate.length > 0)
             return _a.csvStoreGroupedByDate;
-        _a.setCsvStore();
+        _a.getCsvStore();
         return _a.csvStoreGroupedByDate;
     }
     catch (err) {
@@ -107,7 +118,7 @@ CsvHandler.getTokenTypes = () => {
     try {
         if (_a.tokenTypes.length > 0)
             return _a.tokenTypes;
-        _a.setCsvStore();
+        _a.getCsvStore();
         return _a.tokenTypes;
     }
     catch (err) {
