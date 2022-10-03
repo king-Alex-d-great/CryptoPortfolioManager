@@ -1,17 +1,13 @@
-import { RequestService } from "../Controller/Services/requestService"
 import * as inquirer from "inquirer";
-import { Choices as Choice, IController, IRequestService } from "../Models";
-import { Controller } from "../Controller";
+import { Choices as Choice, IController } from "../Models";
 
 export class Application {
-  private availableTokens = [];
-  private csvService: IRequestService;
+  private availableTokens = [];  
   private controller: IController;
 
-  constructor(requestService: IRequestService) {
-    this.csvService = requestService;
-    this.controller = new Controller(requestService);
-    this.availableTokens = this.csvService.getAvailableTokens();
+  constructor(controller : IController) {    
+    this.controller = controller;
+    this.availableTokens = this.controller.getAvailableTokens();
   }
 
   public run = async () => {
@@ -37,7 +33,7 @@ export class Application {
       ]);
   }
 
-  private menuHandler = async () => {
+  protected menuHandler = async () => {
     let option = await this.mainMenu();
 
     let result: [] | string;
@@ -63,10 +59,8 @@ export class Application {
       choice = Choice.OneBalanceByDate;
       result = (await this.controller.handleGetATokenBalanceOnDate(this.availableTokens)).toString();
     }
-
-    console.log(typeof(result), "TYPE")
+    
     console.log(`Query: ${choice}\n`)
-
     if (typeof (result) == "string"){
       console.log(`Result: ${result}`);
     }
