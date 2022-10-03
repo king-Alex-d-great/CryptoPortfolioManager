@@ -28,7 +28,7 @@ NodeJS, Typescript
 **Type Safety** <br />
 Javascript is an awesome language but It can be error-prone because it is not strictly typed.
 <br /> To mitigate some of the type errors that can come up from JS, this project is written in typescript and then compiled to Javascript.
-<br /> The second reason I went with typescript is because its language construct allow object oriented programming outside the box
+<br /> The second reason I went with typescript is because its language construct allow object oriented programming out of the box
 
 **Design Decisions** <br />
 I use an object-oriented approach when building. <br />
@@ -39,7 +39,7 @@ A typical example is the Application class that only exposes a run function whic
 <br />
 S - The only responsibility assigned to the repository class is accessing the data in the CSV file <br />
 O, L - The CsvHandler class is an abstract class that contains protected and private methods. This means it can be extended but never modified <br />
-I - Every interface is a small and specific in respect to necessity <br />
+I - Every interface is small and specific in respect to necessity <br />
 D - Key dependencies were injected across the project to remove the hassle of a tightly coupled system <br />
 
 ### Implementation
@@ -57,7 +57,7 @@ Lets look at how I implemented the various part of the system.
 
 The Repository is the only class that has access to the the data store (in this case the csv file).
 It has private properties and methods to set and store the content of the CSV file and then protected getter-functions to expose the retrieved data.
-Its is an abstract class designed to follow the singleton design principle and the Open-close principle (open for extension, close for modification)
+It is an abstract class designed to follow the singleton design principle and the Open-close principle (open for extension, close for modification)
 
 #### The RequestService Class - Data Access Layer
 
@@ -66,7 +66,7 @@ The purpose of this class is to exposes additional repository functions to manip
 
 #### The Controller Class - Business Logic Layer
 
-The class removes dependency by using the IRequestService Abstraction via Dependency Injection.<br />
+This class removes dependency by using the IRequestService Abstraction via Dependency Injection.<br />
 This means if the requirements for this project ever changes, all we need to do is ensure that the new class is implementing IRequestService. <br />
 The controller class implements IController. The reason for this is to allow us use it via dependency injection. <br />
 It uses an IRequestService class to handle requests from the user of the application.
