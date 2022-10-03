@@ -62,10 +62,10 @@ export class Application {
     
     console.log(`Query: ${choice}\n`)
     if (typeof (result) == "string"){
-      console.log(`Result: ${result}`);
+      console.log(`Result (USD): ${result}`);
     }
     else {
-      console.log("Result:\n")
+      console.log("Result (USD):\n")
       result.forEach(x => console.log(x));
     }
 
