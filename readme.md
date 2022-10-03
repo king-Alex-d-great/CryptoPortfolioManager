@@ -1,17 +1,16 @@
-
 # Crypto Portfolio Tracker
 
 Case Study :
 
 Write a command line program that does the following
 
- - Given no parameters, return the latest portfolio value per token in USD
- - Given a token, return the latest portfolio value for that token in USD
- - Given a date, return the portfolio value per token in USD on that date
- - Given a date and a token, return the portfolio value of that token in USD on that date
-
+- Given no parameters, return the latest portfolio value per token in USD
+- Given a token, return the latest portfolio value for that token in USD
+- Given a date, return the portfolio value per token in USD on that date
+- Given a date and a token, return the portfolio value of that token in USD on that date
 
 ## Author
+
 - [@ogubuikealex](ogubuikealex@gmail.com)
 
 ## Tech Stack
@@ -21,7 +20,6 @@ NodeJS, Typescript
 ## License
 
 [MIT](https://github.com/king-Alex-d-great/CryptoPortfolioManager)
-
 
 ## Design System
 
@@ -45,25 +43,36 @@ I - Every interface is a small and specific in respect to necessity <br />
 D - Key dependencies were injected across the project to remove the hassle of a tightly coupled system <br />
 
 ### Implementation
-The design goal of this application is to create a system that delegates responsibility to relevant parts.
+
+The design goal of this application is to create a system that delegates responsibility to relevant parts. <br />
+To do that I have broken it down into: <br />
+
+- Presentation Layer : handles user interaction and delegation of user request
+- Business Logic Layer : handles actual logic to streamline the app to its specification
+- Data Access Layer : handles interaction with the data store
+
 Lets look at how I implemented the various part of the system.
 
-#### The Repository Class (CsvHandler)
+#### The Repository Class (CsvHandler) - Data Access Layer
+
 The Repository is the only class that has access to the the data store (in this case the csv file).
 It has private properties and methods to set and store the content of the CSV file and then protected getter-functions to expose the retrieved data.
 Its is an abstract class designed to follow the singleton design principle and the Open-close principle (open for extension, close for modification)
 
-#### The RequestService Class
+#### The RequestService Class - Data Access Layer
+
 This extends the Repository class and implements the IRequestService.
 The purpose of this class is to exposes additional repository functions to manipulate stored CSV data.
 
-#### The Controller Class
+#### The Controller Class - Business Logic Layer
+
 The class removes dependency by using the IRequestService Abstraction via Dependency Injection.<br />
 This means if the requirements for this project ever changes, all we need to do is ensure that the new class is implementing IRequestService. <br />
 The controller class implements IController. The reason for this is to allow us use it via dependency injection. <br />
-It uses an IRequestService class to handle requests from the user of the application. 
+It uses an IRequestService class to handle requests from the user of the application.
 
-#### The Application Class
+#### The Application Class : Presentation Layer
+
 This class recieves a controller instance via dependency injection. <br /> It sends requests and receives responses from the controller instance.
 It has several private methods and exposes one public function to kick start the application.
 
@@ -71,6 +80,7 @@ It has several private methods and exposes one public function to kick start the
 
 To run this project, you will need to add the following environment variables to your .env file:
 `api_key=9f0e868097a1b46398dba0e1134e92f3e4a90a8954764684ea312806dc5da8bc`
+
 ## Run Locally
 
 Clone the project
@@ -88,12 +98,13 @@ Go to the project directory
 Install dependencies
 
 ```bash
-  npm i  
+  npm i
 ```
 
 Get CSV file
+
 ```bash
-Project requirement:  _You have made transactions over a period of time which is logged in a CSV file._ 
+Project requirement:  _You have made transactions over a period of time which is logged in a CSV file._
 
 Step One: Download and Unzip file:
 https://s3-ap-southeast-1.amazonaws.com/static.propine.com/transactions.csv.zip
@@ -101,11 +112,11 @@ https://s3-ap-southeast-1.amazonaws.com/static.propine.com/transactions.csv.zip
 Step Two:
 Place the unzipped file ("transactions.csv") in the root folder of the cloned project:
 
-The folder structure should look like: 
+The folder structure should look like:
 
 ├── Application
 ├── Controller
-├── Models  
+├── Models
 ├── Repository
 ├── Utilities
 ├── index.ts
