@@ -74,7 +74,7 @@ export abstract class CsvHandler {
         }
     }
 
-    public static getCsvStore = () => {
+    protected static getCsvStore = () => {
         try {
             if (this.csvStore.length > 0) return this.csvStore;
 
@@ -86,7 +86,7 @@ export abstract class CsvHandler {
 
     }
 
-    public static getGroupedCsvStore = (): TransactionStore[] => {
+    protected static getGroupedCsvStore = (): TransactionStore[] => {
         try {
             if (this.csvStoreGroupedByTokenType.length > 0) return this.csvStoreGroupedByTokenType;
 
@@ -98,7 +98,7 @@ export abstract class CsvHandler {
 
     }
 
-    public static getGroupedCsvStoreByDate = (): TransactionStore[] => {
+    protected static getGroupedCsvStoreByDate = (): TransactionStore[] => {
         try {
             if (this.csvStoreGroupedByDate.length > 0) return this.csvStoreGroupedByDate;
 
@@ -111,7 +111,7 @@ export abstract class CsvHandler {
     }
 
 
-    public static getTokenTypes = () => {
+    protected static getTokenTypes = () => {
         try {
             if (this.tokenTypes.length > 0) return this.tokenTypes;
 

@@ -1,6 +1,8 @@
 import * as inquirer from "inquirer";
+import { IUtils } from "../Models";
 
-export class Utils {
+
+export class Utils implements IUtils{
 
     public getTokenType = async (availableTokens: string[]) => {
         try {
@@ -24,7 +26,6 @@ export class Utils {
         } catch (err) {
             console.log(err.message);
         }
-
     }
 
     public getDate = async () => {
@@ -33,7 +34,7 @@ export class Utils {
             let requestDate: Date;
 
             while (!isValidResponse) {
-                let userInput = await this.getCollector(`\nPlease Enter a Valid Date\nTip: 2020-12-21\n`);
+                let userInput = await this.getCollector(`\nPlease Enter a Valid Date\nTip: 2019-10-24\n`);
                 requestDate = new Date(userInput.Option);
                 if (this.isDateValid(requestDate)) {
                     isValidResponse = true;
@@ -43,7 +44,7 @@ export class Utils {
                 }
             }
 
-            return requestDate;
+            return requestDate as Date;
         } catch (err) {
             console.log(err.message);
         }
