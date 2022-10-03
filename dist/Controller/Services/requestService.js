@@ -22,29 +22,39 @@ class RequestService extends csvRepository_1.CsvHandler {
             return transactions;
         };
         this.getBalance = (token = null) => {
-            const csvStore = RequestService.getGroupedCsvStore();
-            if (token == null || token == "") {
-                return csvStore.map(x => ({ "name": x.name, "balance": x.balance }));
+            try {
+                const csvStore = RequestService.getGroupedCsvStore();
+                if (token == null || token == "") {
+                    return csvStore.map(x => ({ "name": x.name, "balance": x.balance }));
+                }
+                let transactiontype = csvStore.find((x) => x.name.toLowerCase() == token.toLowerCase());
+                return transactiontype.balance;
             }
-            let transactiontype = csvStore.find((x) => x.name.toLowerCase() == token.toLowerCase());
-            return transactiontype.balance;
+            catch (err) {
+                console.log(err.message);
+            }
         };
         this.getBalanceByDate = (date, token = "") => {
-            let csvStore = this.getTransactionsByDate(date);
-            let availableTokens = RequestService.getTokenTypes();
-            let transactions = csvStore.transactions;
-            if (token.length > 0) {
-                transactions = csvStore.transactions.filter(x => x.token.toLowerCase() == token.toLowerCase());
-                const deposits = this.calculateTransactions(transactions, Models_1.TransactionType.deposit);
-                const withdrawals = this.calculateTransactions(transactions, Models_1.TransactionType.withdrawal);
-                return deposits - withdrawals;
+            try {
+                let csvStore = this.getTransactionsByDate(date);
+                let availableTokens = RequestService.getTokenTypes();
+                let transactions = csvStore.transactions;
+                if (token.length > 0) {
+                    transactions = csvStore.transactions.filter(x => x.token.toLowerCase() == token.toLowerCase());
+                    const deposits = this.calculateTransactions(transactions, Models_1.TransactionType.deposit);
+                    const withdrawals = this.calculateTransactions(transactions, Models_1.TransactionType.withdrawal);
+                    return deposits - withdrawals;
+                }
+                return availableTokens.map(tkn => {
+                    transactions = csvStore.transactions.filter(x => x.token.toLowerCase() == tkn.toLowerCase());
+                    const deposits = this.calculateTransactions(transactions, Models_1.TransactionType.deposit);
+                    const withdrawals = this.calculateTransactions(transactions, Models_1.TransactionType.withdrawal);
+                    return { "name": tkn, "balance": (deposits - withdrawals) };
+                });
             }
-            return availableTokens.map(tkn => {
-                transactions = csvStore.transactions.filter(x => x.token.toLowerCase() == tkn.toLowerCase());
-                const deposits = this.calculateTransactions(transactions, Models_1.TransactionType.deposit);
-                const withdrawals = this.calculateTransactions(transactions, Models_1.TransactionType.withdrawal);
-                return { "name": tkn, "balance": (deposits - withdrawals) };
-            });
+            catch (err) {
+                console.log(err.message);
+            }
         };
         this.getAvailableTokens = () => {
             return RequestService.getTokenTypes();

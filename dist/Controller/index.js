@@ -10,27 +10,71 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Controller = void 0;
-const Utilities_1 = require("../Utilities");
+const priceConverter_1 = require("../Utilities/priceConverter");
 class Controller {
-    constructor(requestService) {
+    constructor(requestService, utils) {
         this.handleGetATokenBalance = (availableTokens) => __awaiter(this, void 0, void 0, function* () {
             let tokenType = yield this.utils.getTokenType(availableTokens);
-            return this.csvService.getBalance(tokenType);
+            let result = this.csvService.getBalance(tokenType);
+            let availabletokens = this.getAvailableTokens();
+            let usdBalances = yield (0, priceConverter_1.generateCurrentDataEndpoint)(availabletokens.toString());
+            for (let i in usdBalances) {
+                if (i.toLowerCase() == tokenType.toLowerCase())
+                    result *= (+usdBalances[i].USD);
+            }
+            return result;
         });
-        this.handleGetAllTokenBalances = () => {
-            return this.csvService.getBalance("");
-        };
+        this.handleGetAllTokenBalances = () => __awaiter(this, void 0, void 0, function* () {
+            let result = this.csvService.getBalance("");
+            let availabletokens = this.getAvailableTokens();
+            let usdBalances = yield (0, priceConverter_1.generateCurrentDataEndpoint)(availabletokens.toString());
+            return result.map(x => {
+                for (let i in usdBalances) {
+                    console.log(i, "I");
+                    if (i.toLowerCase() == x.name.toLowerCase()) // alerts key
+                        x.balance *= (+usdBalances[i].USD);
+                }
+                return x;
+            });
+        });
         this.handleGetAllTokenBalancesOnDate = () => __awaiter(this, void 0, void 0, function* () {
-            let date = this.utils.getDate();
-            return this.csvService.getBalanceByDate(yield date, "");
+            let date = yield this.utils.getDate();
+            let result = this.csvService.getBalanceByDate(date, "");
+            const availabletokens = this.getAvailableTokens();
+            const unixTime = Math.floor(date.getTime() / 1000);
+            console.log(availabletokens, "AVAILABLE TOKENS");
+            //let usdBalances = await generateHistoricalDataEndpoint(unixTime, availabletokens.toString());
+            //console.log(usdBalances, "BALANCE")
+            // console.log(result, "RESULT")
+            result = result.map((x) => __awaiter(this, void 0, void 0, function* () {
+                let usdBalances = yield (0, priceConverter_1.generateHistoricalDataEndpoint)(unixTime, x.name);
+                console.log(usdBalances, "BALANCE");
+                for (let i in usdBalances) {
+                    x.balance *= (+usdBalances[i].USD);
+                    console.log(x.balance *= (+usdBalances[i].USD), "AFTER MULTIPLICATION");
+                }
+                return x;
+            }));
+            result = Promise.all(result).then((values) => values);
+            console.log(result, "FINAL RESULT");
+            return yield result;
         });
         this.handleGetATokenBalanceOnDate = (availableTokens) => __awaiter(this, void 0, void 0, function* () {
-            let date = this.utils.getDate();
-            let tokenType = this.utils.getTokenType(availableTokens);
-            return this.csvService.getBalanceByDate(yield date, yield tokenType);
+            let date = yield this.utils.getDate();
+            let tokenType = yield this.utils.getTokenType(availableTokens);
+            let result = this.csvService.getBalanceByDate(date, tokenType);
+            const unixTime = Math.floor(date.getTime() / 1000);
+            let usdBalances = yield (0, priceConverter_1.generateHistoricalDataEndpoint)(unixTime, tokenType);
+            for (let i in usdBalances) {
+                result *= (+usdBalances[i].USD);
+            }
+            return result;
         });
+        this.getAvailableTokens = () => {
+            return this.csvService.getAvailableTokens();
+        };
         this.csvService = requestService;
-        this.utils = new Utilities_1.Utils();
+        this.utils = utils;
     }
 }
 exports.Controller = Controller;

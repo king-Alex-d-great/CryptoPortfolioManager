@@ -35,9 +35,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Application = void 0;
 const inquirer = __importStar(require("inquirer"));
 const Models_1 = require("../Models");
-const Controller_1 = require("../Controller");
 class Application {
-    constructor(requestService) {
+    constructor(controller) {
         this.availableTokens = [];
         this.run = () => __awaiter(this, void 0, void 0, function* () {
             this.menuHandler();
@@ -90,9 +89,8 @@ class Application {
             }
             this.menuHandler();
         });
-        this.csvService = requestService;
-        this.controller = new Controller_1.Controller(requestService);
-        this.availableTokens = this.csvService.getAvailableTokens();
+        this.controller = controller;
+        this.availableTokens = this.controller.getAvailableTokens();
     }
 }
 exports.Application = Application;

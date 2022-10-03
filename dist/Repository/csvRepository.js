@@ -30,62 +30,87 @@ CsvHandler.csvStoreGroupedByTokenType = [];
 CsvHandler.csvStoreGroupedByDate = [];
 CsvHandler.tokenTypes = [];
 CsvHandler.handleCsvTransaction = (row) => {
-    row = row;
-    _a.csvStore.push(row);
-    let rowDate = new Date(+row.timestamp * 1000).toDateString();
-    //Get token store
-    let store = _a.csvStoreGroupedByTokenType.find(x => x.name === row.token);
-    //if store does not exist create a new store
-    if (store === undefined) {
-        let newStore = {
-            name: row.token,
-            balance: 0,
-            transactions: []
-        };
-        _a.csvStoreGroupedByTokenType.push(newStore);
-        _a.tokenTypes.push(row.token);
-        store = _a.csvStoreGroupedByTokenType.find(x => x.name === row.token);
+    try {
+        row = row;
+        _a.csvStore.push(row);
+        let rowDate = new Date(+row.timestamp * 1000).toDateString();
+        //Get token store
+        let store = _a.csvStoreGroupedByTokenType.find(x => x.name === row.token);
+        //if store does not exist create a new store
+        if (store === undefined) {
+            let newStore = {
+                name: row.token,
+                balance: 0,
+                transactions: []
+            };
+            _a.csvStoreGroupedByTokenType.push(newStore);
+            _a.tokenTypes.push(row.token);
+            store = _a.csvStoreGroupedByTokenType.find(x => x.name === row.token);
+        }
+        let storeByDate = _a.csvStoreGroupedByDate.find(x => x.name === rowDate);
+        //if store separated by time does not exist create a new store
+        if (storeByDate === undefined) {
+            let newStore = {
+                name: rowDate,
+                balance: 0,
+                transactions: []
+            };
+            _a.csvStoreGroupedByDate.push(newStore);
+            storeByDate = _a.csvStoreGroupedByDate.find(x => x.name === rowDate);
+        }
+        store.transactions.push(row);
+        storeByDate.transactions.push(row);
+        //update store balances depending on transaction type
+        row.transaction_type == Models_1.TransactionType.deposit ?
+            (store.balance += +row.amount, storeByDate.balance += +row.amount) :
+            row.transaction_type == Models_1.TransactionType.withdrawal ?
+                (store.balance -= +row.amount, storeByDate.balance -= +row.amount) : "";
     }
-    let storeByDate = _a.csvStoreGroupedByDate.find(x => x.name === rowDate);
-    //if store separated by time does not exist create a new store
-    if (storeByDate === undefined) {
-        let newStore = {
-            name: rowDate,
-            balance: 0,
-            transactions: []
-        };
-        _a.csvStoreGroupedByDate.push(newStore);
-        storeByDate = _a.csvStoreGroupedByDate.find(x => x.name === rowDate);
+    catch (err) {
+        throw err;
     }
-    store.transactions.push(row);
-    storeByDate.transactions.push(row);
-    //update store balances depending on transaction type
-    row.transaction_type == Models_1.TransactionType.deposit ?
-        (store.balance += +row.amount, storeByDate.balance += +row.amount) :
-        row.transaction_type == Models_1.TransactionType.withdrawal ?
-            (store.balance -= +row.amount, storeByDate.balance -= +row.amount) : "";
 };
 CsvHandler.getCsvStore = () => {
-    if (_a.csvStore.length > 0)
+    try {
+        if (_a.csvStore.length > 0)
+            return _a.csvStore;
+        _a.setCsvStore();
         return _a.csvStore;
-    _a.setCsvStore();
-    return _a.csvStore;
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 };
 CsvHandler.getGroupedCsvStore = () => {
-    if (_a.csvStoreGroupedByTokenType.length > 0)
+    try {
+        if (_a.csvStoreGroupedByTokenType.length > 0)
+            return _a.csvStoreGroupedByTokenType;
+        _a.setCsvStore();
         return _a.csvStoreGroupedByTokenType;
-    _a.setCsvStore();
-    return _a.csvStoreGroupedByTokenType;
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 };
 CsvHandler.getGroupedCsvStoreByDate = () => {
-    if (_a.csvStoreGroupedByDate.length > 0)
+    try {
+        if (_a.csvStoreGroupedByDate.length > 0)
+            return _a.csvStoreGroupedByDate;
+        _a.setCsvStore();
         return _a.csvStoreGroupedByDate;
-    _a.setCsvStore();
-    return _a.csvStoreGroupedByDate;
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 };
 CsvHandler.getTokenTypes = () => {
-    if (_a.tokenTypes.length > 0)
+    try {
+        if (_a.tokenTypes.length > 0)
+            return _a.tokenTypes;
+        _a.setCsvStore();
         return _a.tokenTypes;
-    _a.setCsvStore();
-    return _a.tokenTypes;
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 };

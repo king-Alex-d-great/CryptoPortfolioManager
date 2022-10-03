@@ -37,35 +37,45 @@ const inquirer = __importStar(require("inquirer"));
 class Utils {
     constructor() {
         this.getTokenType = (availableTokens) => __awaiter(this, void 0, void 0, function* () {
-            let isValidResponse = false;
-            availableTokens = availableTokens.map(x => x.toLowerCase());
-            let Option = "";
-            while (!isValidResponse) {
-                let result = (yield this.getCollector(`Enter a valid token option\nAvailable option ${availableTokens !== null && availableTokens !== void 0 ? availableTokens : "None"}`));
-                if (availableTokens.includes(result.Option.toLowerCase())) {
-                    isValidResponse = true;
-                    Option = result.Option;
+            try {
+                let isValidResponse = false;
+                availableTokens = availableTokens.map(x => x.toLowerCase());
+                let Option = "";
+                while (!isValidResponse) {
+                    let result = (yield this.getCollector(`Enter a valid token option\nAvailable option ${availableTokens !== null && availableTokens !== void 0 ? availableTokens : "None"}`));
+                    if (availableTokens.includes(result.Option.toLowerCase())) {
+                        isValidResponse = true;
+                        Option = result.Option;
+                    }
+                    else {
+                        console.log("Invalid Option!");
+                    }
                 }
-                else {
-                    console.log("Invalid Option!");
-                }
+                return Option;
             }
-            return Option;
+            catch (err) {
+                console.log(err.message);
+            }
         });
         this.getDate = () => __awaiter(this, void 0, void 0, function* () {
-            let isValidResponse = false;
-            let requestDate;
-            while (!isValidResponse) {
-                let userInput = yield this.getCollector(`\nPlease Enter a Valid Date\nTip: 2020-12-21\n`);
-                requestDate = new Date(userInput.Option);
-                if (this.isDateValid(requestDate)) {
-                    isValidResponse = true;
+            try {
+                let isValidResponse = false;
+                let requestDate;
+                while (!isValidResponse) {
+                    let userInput = yield this.getCollector(`\nPlease Enter a Valid Date\nTip: 2019-10-24\n`);
+                    requestDate = new Date(userInput.Option);
+                    if (this.isDateValid(requestDate)) {
+                        isValidResponse = true;
+                    }
+                    else {
+                        console.log("Invalid Date!");
+                    }
                 }
-                else {
-                    console.log("Invalid Date!");
-                }
+                return requestDate;
             }
-            return requestDate;
+            catch (err) {
+                console.log(err.message);
+            }
         });
         this.getCollector = (question) => {
             return inquirer

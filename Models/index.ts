@@ -10,7 +10,8 @@ export interface IController {
     handleGetATokenBalance(availableTokens: string[]): Promise<string>,
     handleGetAllTokenBalances(): Promise<[]>,
     handleGetAllTokenBalancesOnDate(): Promise<[]>,
-    handleGetATokenBalanceOnDate(availableTokens: string[]): Promise<string>
+    handleGetATokenBalanceOnDate(availableTokens: string[]): Promise<string>,
+    getAvailableTokens(): string[]
 }
 export interface Transaction {
     timestamp: string;
@@ -37,4 +38,9 @@ export interface IRequestService {
     getBalance(token: string);
     getBalanceByDate(date: Date, token: string);
     getAvailableTokens(): string[];
+}
+
+export interface IUtils {
+    getTokenType(availableTokens: string[]);
+    getDate()
 }
