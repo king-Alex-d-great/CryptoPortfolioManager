@@ -11,14 +11,7 @@ export class RequestService extends CsvHandler implements IRequestService {
         transactions = transactions.filter(x => x.transaction_type == transactionType);
 
         return transactions.reduce((sum, current) => sum + +current.amount, 0);
-    }
-
-    // public getTransactions = (token: string = null): Transaction[] => {
-    //     const csvStore: Transaction[] = RequestService.getCsvStore();
-
-    //     if (token.trim().length === 0) return csvStore;
-    //     return csvStore.filter((x) => x.token.toLowerCase() == token.toLowerCase());
-    // }
+    }  
 
     public getTransactionsByDate = (date: Date): TransactionStore => {
 
