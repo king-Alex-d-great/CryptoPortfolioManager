@@ -67,6 +67,10 @@ It uses an IRequestService class to handle requests from the user of the applica
 This class recieves a controller instance via dependency injection. <br /> It sends requests and receives responses from the controller instance.
 It has several private methods and exposes one public function to kick start the application.
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file:
+`api_key=9f0e868097a1b46398dba0e1134e92f3e4a90a8954764684ea312806dc5da8bc`
 ## Run Locally
 
 Clone the project
@@ -85,6 +89,21 @@ Install dependencies
 
 ```bash
   npm i
+  Download and unzip file from : [transactions.csv](https://s3-ap-southeast-1.amazonaws.com/static.propine.com/transactions.csv.zip)
+  Place the unzipped file ("transactions.csv") in the root folder of the cloned project:
+
+  Final folder structure
+├── Application
+├── Controller
+├── Models  
+├── Repository
+├── Utilities
+├── index.ts
+├── Package-lock.json
+├── package.json
+├── readme.md
+├── transactions.csv
+├── tsconfig.json
 ```
 
 Start the server
@@ -92,3 +111,6 @@ Start the server
 ```bash
   npm run dev
 ```
+
+
+
